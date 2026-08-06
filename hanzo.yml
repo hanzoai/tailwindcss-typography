@@ -1,0 +1,20 @@
+# Canonical CI/CD config for hanzoai/tailwindcss-typography — read by the
+# hanzoai/ci reusable workflow (.hanzo/workflows/cicd.yml) and by
+# platform.hanzo.ai.
+#
+# LIBRARY: the `prose` plugin for Tailwind. No image, no deploy — it ships from
+# a tag.
+#
+# The gate is the jest suite. A Tailwind plugin has no types to check and
+# nothing to compile — it is a function that returns a CSS object — so the only
+# way to know it still works is to run Tailwind over a fixture and diff the
+# emitted CSS, which is exactly what test/ does (jest/customMatchers.js exists
+# for that comparison). It goes red on a changed selector or a dropped
+# modifier, which is the entire failure surface.
+#
+# The demo/ Next site (`npm run build`) is deliberately not in the gate: it is
+# documentation, it pulls a whole React toolchain, and it can break without the
+# plugin being wrong.
+test:
+  - name: test
+    run: npm ci && npm test
